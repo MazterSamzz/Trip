@@ -1,0 +1,92 @@
+@startuml Trip
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+
+' ===== Entitas utama =====
+entity trips {
+    * id : UUID <<PK>>
+    --
+    title : varchar
+    start_date : date
+    is_private : boolean
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity destinations {
+    * id : UUID <<PK>>
+    --
+    name : varchar
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity pois {
+    * id : UUID <<PK>>
+    --
+    destination_id : UUID <<FK>>
+    google_place_id : varchar <<UNIQUE, NULL>>
+    name : varchar
+    image_url : varchar <<NULL>>
+    description : text <<NULL>>
+    latitude : decimal(10,7)
+    longitude : decimal(10,7)
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity trip_days {
+    * id : UUID <<PK>>
+    --
+    trip_id : UUID <<FK>>
+    destination_id : UUID <<FK, NULL>>
+    day_number : smallint
+    start_time : time
+    version : int
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity itinerary_items {
+    * id : UUID <<PK>>
+    --
+    trip_day_id : UUID <<FK>>
+    poi_id : UUID <<FK, NULL>>
+    title : varchar
+    position : int
+    duration : smallint
+    type : tinyint
+}
+
+entity users {
+    * id : UUID <<PK>>
+    --
+    name : varchar
+    password : varchar
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity trip_members {
+    *id: UUID <<PK>>
+    --
+    trip_id: UUID <<FK>>
+    user_id: UUID <<FK>>
+    role: tinyint
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+' ===== Relationships =====
+trips ||--o{ trip_days
+trips ||--o{ trip_members
+users ||--o{ trip_members
+
+destinations ||--o{ pois
+destinations ||--o{ trip_days
+
+trip_days ||--o{ itinerary_items
+pois ||--o{ itinerary_items
+
+
+@enduml

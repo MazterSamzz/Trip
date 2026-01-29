@@ -1,0 +1,85 @@
+@startuml Trip
+skinparam classAttributeIconSize 0
+
+' ===== Aggregate Root =====
+class Trip {
+  +id: UUID
+  +title: string
+  +start_date: date
+  +is_private: boolean
+}
+
+' ===== Child Entity =====
+class TripDay {
+  +id: UUID
+  +trip_id: UUID
+  +day_order: smallInt
+  +start_time: time
+  +version: int
+  +destination_id: UUID [0..1]
+}
+
+class ItineraryItem {
+  +id: UUID
+  +trip_day_id: UUID
+  +title: string
+  +position: int
+  +duration: smallInt
+  +type: ItineraryItemType
+  +poi_id: UUID [0..1]
+}
+
+' ===== Supporting Entities =====
+class Destination {
+  +id: UUID
+  +name: string
+}
+
+class Poi {
+  +id: UUID
+  +google_place_id: string(100) [0..1]
+  +name: string
+  +image_url: string(500) [0..1]
+  +description: string [0..1]
+  +latitude: decimal
+  +longitude: decimal
+  +destination_id: UUID
+}
+
+class User {
+  +id: UUID
+  +name: string
+}
+
+class TripMember {
+  +id: UUID
+  +trip_id: UUID
+  +user_id: UUID
+  +role: TripRole
+}
+
+' ===== Enum =====
+enum TripRole {
+  Owner
+  Organizer
+  Member
+}
+
+enum ItineraryItemType {
+  Food
+  Transit
+  Experience
+  Leisure
+}
+
+' ===== Relationships =====
+Trip "1" *-- "*" TripDay : has
+TripDay "1" *-- "*" ItineraryItem : contains
+Trip "1" o-- "*" TripMember : shared_with
+
+TripMember "*" --> "1" User
+ItineraryItem "*" --> "0..1" Poi
+Poi "*" --> "1" Destination
+TripDay "*" --> "0..1" Destination
+
+@enduml

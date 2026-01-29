@@ -1,0 +1,28 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dependencies
+**/node_modules/
+**/vendor/
+
+# Laravel
+**/storage/*.key
+**/storage/logs/
+**/storage/framework/
+
+# Build artifacts
+**/dist/
+**/build/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Ignore generated svg files
+docs/architecture/domain/*.svg
+docs/architecture/erd/*.svg
