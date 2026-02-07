@@ -48,7 +48,15 @@ class Poi {
 
 class User {
   +id: UUID
+  +username: string
+  +email: string
   +name: string
+}
+
+class UserAuthProviders {
+    +id: UUID
+    +provider: string
+    +provider_user_id: string
 }
 
 class TripMember {

@@ -61,10 +61,19 @@ entity itinerary_items {
 entity users {
     * id : UUID <<PK>>
     --
+    username : varchar
+    email: varchar
+    password : varchar <<NULL>>
     name : varchar
-    password : varchar
     created_at : timestamp
     updated_at : timestamp
+}
+
+entity user_auth_providers {
+    *id: UUID <<PK>>
+    --
+    provider: varchar
+    provider_user_id: varchar
 }
 
 entity trip_members {

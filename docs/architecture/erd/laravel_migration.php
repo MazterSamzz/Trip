@@ -1,8 +1,33 @@
 <?php
+
+// create_users_table.php
+Schema::create('users', function (Blueprint $table) {
+    $table->uuid('id')->primary();
+    $table->string('username')->unique();
+    $table->string('email')->unique();
+    $table->string('password')->nullable();
+    $table->string('name');
+
+    $table->timestamps();
+});
+
+
+// create_users_table.php
+Schema::create('user_auth_providers', function (Blueprint $table) {
+    $table->uuid('id')->primary();
+    $table->string('provider');
+    $table->string('provider_user_id');
+
+    $table->unique(['provider', 'provider_user_id']);
+    $table->unique(['user_id', 'provider']);
+
+    $table->timestamps();
+});
+
 // create_trips_table.php
 Schema::create('trips', function (Blueprint $table) {
     $table->uuid('id')->primary();
-    $table->string('title', 50);
+    $table->string('title');
     $table->date('start_date');
     $table->boolean('is_private')->default(false);
     $table->timestamps();
@@ -61,13 +86,6 @@ Schema::create('itinerary_items', function (Blueprint $table) {
     $table->unique(['trip_day_id', 'position']);
 });
 
-// create_users_table.php
-Schema::create('users', function (Blueprint $table) {
-    $table->uuid('id')->primary();
-    $table->string('name');
-    $table->string('password');
-    $table->timestamps();
-});
 
 // create_trip_members_table.php
 Schema::create('trip_members', function (Blueprint $table) {
