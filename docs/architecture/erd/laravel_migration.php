@@ -15,6 +15,7 @@ Schema::create('users', function (Blueprint $table) {
 // create_users_table.php
 Schema::create('user_auth_providers', function (Blueprint $table) {
     $table->uuid('id')->primary();
+    $table->uuid('user_id')->index();
     $table->string('provider');
     $table->string('provider_user_id');
 

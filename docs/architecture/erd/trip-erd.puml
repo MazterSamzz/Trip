@@ -72,8 +72,11 @@ entity users {
 entity user_auth_providers {
     *id: UUID <<PK>>
     --
+    user_id: UUID <<IDX>>
     provider: varchar
     provider_user_id: varchar
+    created_at : timestamp
+    updated_at : timestamp
 }
 
 entity trip_members {
