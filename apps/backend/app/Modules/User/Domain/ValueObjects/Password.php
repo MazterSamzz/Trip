@@ -8,16 +8,14 @@ use Illuminate\Support\Facades\Hash;
 use InvalidArgumentException;
 use Stringable;
 
-final class PasswordHash implements Stringable
+final class Password implements Stringable
 {
-    private function __construct(
-        private string $value
-    ) {}
+    private function __construct(private string $value) {}
 
     /**
-     * Untuk password BARU dari input user
+     * New password from plain text, will be hashed internally
      */
-    public static function fromPlain(string $plain): self
+    public static function make(string $plain): self
     {
         if (strlen($plain) < 8) {
             throw new InvalidArgumentException('Password must be at least 8 characters.');
@@ -27,20 +25,21 @@ final class PasswordHash implements Stringable
     }
 
     /**
-     * Untuk password dari database
+     * Existing password hash (e.g. from database), will be used as-is
      */
-    public static function fromHash(string $value): self
+    public static function fromhash(string $value): self
     {
-        if ($value === '') {
-            throw new InvalidArgumentException('Password hash cannot be empty.');
-        }
-
         return new self($value);
     }
 
     public function verify(string $plain): bool
     {
         return Hash::check($plain, $this->value);
+    }
+
+    public function value(): string
+    {
+        return $this->value;
     }
 
     public function __toString(): string

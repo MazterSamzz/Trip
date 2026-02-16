@@ -9,9 +9,12 @@ use Symfony\Component\Uid\UuidV7;
 
 final class UserId implements Stringable
 {
-    private function __construct(
-        private string $value
-    ) {}
+    private function __construct(private string $value)
+    {
+        if (!UuidV7::isValid($value)) {
+            throw new \InvalidArgumentException('Invalid UserId format, must be a valid UUIDv7 string.');
+        }
+    }
 
     public static function generate(): self
     {
@@ -24,12 +27,12 @@ final class UserId implements Stringable
         return new self($id);
     }
 
-    public function __toString(): string
+    public function value(): string
     {
         return $this->value;
     }
 
-    public function value(): string
+    public function __toString(): string
     {
         return $this->value;
     }

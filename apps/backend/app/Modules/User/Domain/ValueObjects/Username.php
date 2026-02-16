@@ -29,12 +29,12 @@ final class Username implements Stringable
         return $this->value === (string) $other;
     }
 
-    public function __toString(): string
+    public function value(): string
     {
         return $this->value;
     }
 
-    public function value(): string
+    public function __toString(): string
     {
         return $this->value;
     }
